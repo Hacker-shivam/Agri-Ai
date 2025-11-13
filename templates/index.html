@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Crop Recommendation{% endblock %}
+
+{% block content %}
+    <h2 class="text-center text-success mb-4">Crop and Fertilizer Recommendation Tool</h2>
+    <p class="text-center">Welcome back, **{{ current_user.username }}**. Input your soil and environmental data below to get personalized recommendations.</p>
+
+    <div class="container">
+        <form method="POST" class="row g-3 p-4 border rounded shadow-sm bg-light">
+            <h5 class="text-primary">Soil Nutrients (Ratios)</h5>
+            <div class="col-md-3">
+                <label for="N" class="form-label">Nitrogen (N)</label>
+                <input type="number" step="any" class="form-control" id="N" name="N" required value="90">
+            </div>
+            <div class="col-md-3">
+                <label for="P" class="form-label">Phosphorus (P)</label>
+                <input type="number" step="any" class="form-control" id="P" name="P" required value="42">
+            </div>
+            <div class="col-md-3">
+                <label for="K" class="form-label">Potassium (K)</label>
+                <input type="number" step="any" class="form-control" id="K" name="K" required value="43">
+            </div>
+             <div class="col-md-3">
+                <label for="pH" class="form-label">pH Value</label>
+                <input type="number" step="any" class="form-control" id="pH" name="pH" required value="6.5">
+            </div>
+
+            <h5 class="text-primary mt-4">Climate Conditions</h5>
+            <div class="col-md-3">
+                <label for="temp" class="form-label">Temperature (°C)</label>
+                <input type="number" step="any" class="form-control" id="temp" name="temp" required value="20.87">
+            </div>
+            <div class="col-md-3">
+                <label for="hum" class="form-label">Humidity (%)</label>
+                <input type="number" step="any" class="form-control" id="hum" name="hum" required value="82.00">
+            </div>
+            <div class="col-md-3">
+                <label for="rain" class="form-label">Rainfall (mm)</label>
+                <input type="number" step="any" class="form-control" id="rain" name="rain" required value="202.93">
+            </div>
+            
+            <div class="col-md-3">
+                <label for="soil_type" class="form-label">Soil Type</label>
+                <select id="soil_type" name="soil_type" class="form-select" required>
+                    {% for soil in soil_types %}
+                        <option value="{{ soil }}" {% if soil == 'Loamy' %}selected{% endif %}>{{ soil }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-success w-100">✨ Get Recommendation</button>
+            </div>
+        </form>
+    </div>
+    {% if recommendation %}
+        <div class="result-box mt-4 p-4 rounded shadow-sm 
+                    {% if recommendation.error %}alert-danger{% else %}alert-info{% endif %}">
+            
+            {% if recommendation.error %}
+                <h4 class="text-danger">⚠️ Error:</h4>
+                <p>{{ recommendation.error }}</p>
+            {% else %}
+                <h4 class="text-primary">🎯 Final Recommendation:</h4>
+                <p class="fs-5">Best Crop to Grow: <strong>{{ recommendation.crop }}</strong> (Confidence: {{ recommendation.crop_conf }})</p>
+                <p class="fs-5">Optimal Fertilizer: <strong>{{ recommendation.fertilizer }}</strong></p>
+                
+                <hr>
+                <small class="text-muted">Input Snapshot: N={{ recommendation.inputs.N }}, P={{ recommendation.inputs.P }}, K={{ recommendation.inputs.K }}, 
+                    pH={{ recommendation.inputs.pH }}, T={{ recommendation.inputs.Temp }}, H={{ recommendation.inputs.Hum }}, 
+                    R={{ recommendation.inputs.Rain }}, Soil={{ recommendation.inputs.Soil }}
+                </small>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% endblock %}

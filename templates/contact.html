@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+    <h2 class="text-success mb-4">Get in Touch with Our Team</h2>
+    <p class="lead">Have questions about the system, feature requests, or collaboration ideas? Send us a message!</p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST" class="p-4 border rounded shadow-sm bg-light">
+                
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="name@example.com">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" class="form-control" id="subject" name="subject" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-success w-100">Submit Inquiry</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Our Services{% endblock %}
+
+{% block content %}
+    <h2 class="text-success mb-4">Our Agricultural Intelligence Services</h2>
+    <p class="lead">We provide data-driven insights powered by machine learning to turn your farming into **precision agriculture**. Our goal is simple: maximize yield, minimize waste.</p>
+    
+    <hr>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        
+        <div class="col">
+            <div class="card h-100 border-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-success">🌾 Crop Recommendation</h5>
+                    <p class="card-text">Our core service. Using a **Random Forest Classification model**, we analyze your soil chemistry (N, P, K, pH) and climate data to suggest the single best crop that will thrive in your specific field conditions.</p>
+                    <span class="badge bg-success">Status: LIVE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">🧪 Fertilizer Optimization</h5>
+                    <p class="card-text">After selecting your crop, a **K-Nearest Neighbors (KNN) model** recommends the ideal fertilizer type (e.g., Urea, DAP) needed to balance your soil's current nutrient levels for optimal growth.</p>
+                    <span class="badge bg-primary">Status: LIVE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">🐛 Disease Protection & Diagnosis</h5>
+                    <p class="card-text">The next big feature! This service will utilize a **Convolutional Neural Network (CNN)** for image recognition. Simply upload a picture of a diseased leaf, and the system will diagnose the problem and suggest a treatment plan.</p>
+                    <span class="badge bg-warning text-dark">Status: Upcoming</span>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="mt-5 text-center">
+        <h3 class="text-secondary">Future Enhancements</h3>
+        <p>We are constantly working to integrate real-time weather APIs and local market price data to make your recommendations even smarter and more profitable.</p>
+    </div>
+
+{% endblock %}

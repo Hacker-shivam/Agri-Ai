@@ -1,0 +1,162 @@
+<!-- templates/home_dashboard.html -->
+{% extends "base.html" %}
+{% block title %}Agri-AI Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        
+        <h1 class="text-center text-success mb-5">
+            Welcome to the Agri-AI Dashboard, {{ current_user.username }}!
+        </h1>
+
+        <!-- Row 1: Location & Weather Selector -->
+        <div class="row mb-5">
+            <div class="col-md-7">
+                <div class="card shadow h-100 border-primary">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">📍 Current Location & Weather</h4>
+                        <div class="row align-items-center">
+                            
+                            <!-- Weather Display -->
+                            <div class="col-md-6 border-end">
+                                <p class="card-text fs-4 mb-0"><strong>{{ current_city }}, {{ current_state }}</strong></p>
+                                <p class="card-text fs-1 fw-bold mb-0 text-dark">{{ weather.temp }}</p>
+                                <p class="text-muted">{{ weather.condition }} | {{ weather.details }}</p>
+                            </div>
+                            
+                            <!-- Location Selection Form -->
+                            <div class="col-md-6">
+                                <form method="GET" action="{{ url_for('home') }}" id="locationForm" class="p-2">
+                                    <label for="stateSelect" class="form-label">Select State:</label>
+                                    <select class="form-select mb-2" id="stateSelect" name="state" required>
+                                        <option value="" disabled>Select State...</option>
+                                        {% for state_name in location_data.keys()|sort %}
+                                            <option value="{{ state_name }}" {% if current_state == state_name %}selected{% endif %}>{{ state_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    
+                                    <label for="citySelect" class="form-label">Select District/City:</label>
+                                    <select class="form-select" id="citySelect" name="city" required>
+                                        <!-- Options populated by JavaScript -->
+                                    </select>
+                                    
+                                    <button type="submit" class="btn btn-sm btn-outline-primary mt-2 w-100">Set Location</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Farming Image -->
+            <div class="col-md-5">
+                <div class="card shadow h-100 bg-light">
+                    <img src="https://placehold.co/400x200/28a745/ffffff?text={{ current_state }}+Farming" class="card-img-top" alt="Farming View" style="height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Row 2: Growth Ratios & Quick Actions -->
+        <div class="row mb-5">
+            
+            <!-- Growth Ratios -->
+            <div class="col-md-7">
+                <div class="card shadow border-info h-100">
+                    <div class="card-body">
+                        <h4 class="card-title text-info">📈 Crop Growth Ratios (YoY)</h4>
+                        <p class="text-muted small">Simulated data reflecting annual growth trends in {{ current_city }}.</p>
+                        <ul class="list-group list-group-flush">
+                            {% for ratio in growth_ratios %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <strong>{{ ratio.crop }}</strong>
+                                    <span class="badge bg-{{ 'success' if ratio.status == 'up' else 'danger' }} p-2">
+                                        {{ '⬆' if ratio.status == 'up' else '⬇' }} {{ ratio.ratio }}%
+                                    </span>
+                                </li>
+                            {% endfor %}
+                            <li class="list-group-item text-center">
+                                <small>Data simulated based on regional factors.</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions & News -->
+            <div class="col-md-5">
+                <div class="card shadow h-100 border-success">
+                    <div class="card-body">
+                        <h4 class="card-title text-success">⚡ Quick Actions & News</h4>
+                        <div class="d-grid gap-2 mb-3">
+                           <a href="{{ url_for('recommender_page') }}" class="btn btn-lg btn-success">
+                            🌾 Crop & Fertilizer Recommender
+                           </a>
+                        </div>
+                        
+                        <h6 class="text-dark border-top pt-2 mt-2">📰 Headlines for {{ current_state }}</h6>
+                        <ul class="list-group list-group-flush small">
+                            {% for headline in news_headlines %}
+                                <li class="list-group-item p-1 border-0">{{ headline }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height: 50px;"></div>
+
+    <!-- --- JAVASCRIPT FOR DYNAMIC CITY DROPDOWN --- -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stateSelect = document.getElementById('stateSelect');
+            const citySelect = document.getElementById('citySelect');
+            
+            // Map the location data passed from Flask
+            const citiesByState = {{ location_data|tojson }};
+            const currentState = "{{ current_state }}";
+            const currentCity = "{{ current_city }}";
+            let initialCitySet = false; // Flag to prevent current city from being overwritten
+
+            function updateCities(selectedState) {
+                // Clear existing options
+                citySelect.innerHTML = ''; 
+
+                const cities = citiesByState[selectedState] || [];
+                
+                if (cities.length === 0) {
+                    citySelect.disabled = true;
+                    let option = document.createElement('option');
+                    option.text = 'No cities/districts available';
+                    citySelect.add(option);
+                    return;
+                }
+                
+                citySelect.disabled = false;
+                
+                cities.forEach(city => {
+                    let option = document.createElement('option');
+                    option.value = city;
+                    option.text = city;
+                    
+                    // On initial load, try to match the city passed by Flask URL
+                    if (!initialCitySet && city === currentCity) {
+                        option.selected = true;
+                        initialCitySet = true;
+                    }
+                    citySelect.add(option);
+                });
+            }
+
+            // 1. Initial Load: Populate cities based on the state loaded by Flask (or default)
+            updateCities(currentState);
+
+            // 2. Event Listener: When state changes, update the cities
+            stateSelect.addEventListener('change', function() {
+                // When state changes, we submit the form immediately to reload the page
+                // This allows Flask to handle setting the default city and fetching new dynamic data.
+                document.getElementById('locationForm').submit();
+            });
+        });
+    </script>
+{% endblock %}

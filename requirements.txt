@@ -1,0 +1,8 @@
+# requirements.txt
+Flask
+pandas
+numpy
+scikit-learn
+Flask-SQLAlchemy         # Database ORM
+Flask-Login              # Session management
+Werkzeug

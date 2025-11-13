@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}About Our Project{% endblock %}
+{% block content %}
+    <h2 class="text-success mb-4">🌱 About the Agri-AI Recommendation System</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <p class="lead">
+               The Agri-AI Recommendation System is an innovative fusion of agricultural expertise and artificial intelligence, developed to empower farmers, agronomists, and policymakers with data-driven insights for smarter, more sustainable farming practices.
+
+This project stems from the vision of transforming traditional farming — often dependent on experience and intuition — into a scientifically informed and technology-assisted process. By analyzing key environmental and soil parameters, the system provides actionable recommendations for both crop selection and fertilizer usage, tailored to specific regional and climatic conditions.
+            </p>
+            <p>
+                Our system goes beyond simple look-up tables. It employs sophisticated **Machine Learning classifiers** (Random Forest and KNN) trained on diverse global data covering soil nutrient profiles, temperature, pH, and rainfall patterns. This allows us to provide hyper-localized and scientifically-backed advice, ensuring that every crop planted has the optimal chance of success.
+            </p>
+            <h3 class="mt-4 text-primary">🧠 Core Intelligence</h3>
+             <p>
+                At the heart of the system lies a suite of machine learning classifiers, including:
+
+                <ul><br><strong> Forest Classifier –</strong> Ensures robust and accurate predictions by combining 
+                <br>multiple decision trees trained on soil nutrients, temperature, humidity, and rainfall data.</ul>
+
+                <ul><br><strong>Neighbors (KNN) –</strong> Enhances model flexibility and locality-based predictions,
+                <br>adapting to unique soil and climate variations in different geographical zones.</ul>
+
+                These algorithms have been trained on diverse global agricultural datasets, incorporating
+                multiple soil types (loamy, sandy, clayey), pH ranges, nutrient compositions (N, P, K), 
+                and weather conditions. The result is a hyper-localized and scientifically-backed advisory
+                system capable of delivering personalized insights for each user.
+            </p>
+            <h3 class="mt-4 text-primary">🌾 What It Offers</h3>
+             <pre style="font-weight: bolder;">
+    🌍 Crop Recommendation: Suggests the most suitable crops based on soil nutrients, pH, 
+        temperature, and rainfall.
+
+    💧 Fertilizer Recommendation: Recommends the ideal fertilizer blend to balance soil 
+        nutrients and enhance yield.
+
+    📊 Data Visualization: Interactive charts and dashboards for visualizing soil and weather
+        patterns.
+
+    🧬 Smart Analytics: Uses real-time and historical data to understand crop performance trends.
+
+    ⚙️ Scalable Design: Built with modular architecture to integrate IoT sensors, satellite data, 
+        or mobile app interfaces in future versions.
+             </pre>
+        </div>
+        
+        <div class="col-md-4 text-center">
+            <div class="card p-3 shadow-sm border-success">
+                <img 
+                    src="{{ url_for('static', filename='profile.jpg') }}" 
+                    class="img-fluid rounded-circle mx-auto mb-3" 
+                    alt="Developer's Profile Picture"
+                    style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #28a745;"
+                >
+                <h4 class="card-title text-success">Developer Profile</h4>
+                <h5 class="card-subtitle mb-2 text-muted">Lead Developer & Data Scientist</h5>
+                <b class="card-text small" style="color: #28a745;">
+                    This system was developed by <b>Mr Shivam Rajput</b>. <br> as 7th Sem project focusing on practical <br>applications of AI in agriculture.<br> I specialize in predictive modeling and sustainable tech solutions.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
