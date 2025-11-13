@@ -372,7 +372,15 @@ def recommender_page(): # This function name matches the url_for('recommender_pa
 # 9. RUN APP
 # --------------------------------------------------------------------------------
 if __name__ == '__main__':
+    import os
+    
     with app.app_context():
         db.create_all()
-    print("🚀 Flask app running on http://127.0.0.1:5000")
-    app.run(debug=True)
+    
+    # Use Render's assigned port or default to 5000 for local dev
+    port = int(os.environ.get("PORT", 5000))
+    
+    print(f"🚀 Flask app running on http://0.0.0.0:{port}")
+    
+    # Bind to 0.0.0.0 so Render can detect it
+    app.run(host="0.0.0.0", port=port, debug=False)
